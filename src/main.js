@@ -27,10 +27,10 @@ document.querySelector('#app').innerHTML = `
     <section id="services" class="services section-wrap section-space">
       <div class="section-heading"><p class="eyebrow">What we do</p><h2>One creative<br><em>language.</em></h2></div>
       <div class="service-grid">
-        <article class="service"><span class="service-number mono">01</span><h3>Video<br>editing</h3><p>Short-form that stops the scroll. Long-form that holds attention.</p><a href="#contact" aria-label="Explore video editing">↗</a></article>
-        <article class="service"><span class="service-number mono">02</span><h3>Video-<br>graphy</h3><p>On-location capture built around your brand, people, and place.</p><a href="#contact" aria-label="Explore videography">↗</a></article>
-        <article class="service"><span class="service-number mono">03</span><h3>Graphic<br>design</h3><p>Visual systems that make every detail feel unmistakably yours.</p><a href="#contact" aria-label="Explore graphic design">↗</a></article>
-        <article class="service"><span class="service-number mono">04</span><h3>Motion<br>graphics</h3><p>Bringing life to your brand's message in fun ways.</p><a href="#contact" aria-label="Explore motion graphics">↗</a></article>
+        <article class="service"><span class="service-number mono">01</span><h3>Video<br>editing</h3><p>Short-form that stops the scroll. Long-form that holds attention.</p><a href="/portfolio/video-editing/" target="_blank" rel="noreferrer" aria-label="Explore video editing">↗</a></article>
+        <article class="service"><span class="service-number mono">02</span><h3>Video-<br>graphy</h3><p>On-location capture built around your brand, people, and place.</p><a href="/portfolio/videography/" target="_blank" rel="noreferrer" aria-label="Explore videography">↗</a></article>
+        <article class="service"><span class="service-number mono">03</span><h3>Graphic<br>design</h3><p>Visual systems that make every detail feel unmistakably yours.</p><a href="/portfolio/graphic-design/" target="_blank" rel="noreferrer" aria-label="Explore graphic design">↗</a></article>
+        <article class="service"><span class="service-number mono">04</span><h3>Motion<br>graphics</h3><p>Bringing life to your brand's message in fun ways.</p><a href="/portfolio/motion-graphics/" target="_blank" rel="noreferrer" aria-label="Explore motion graphics">↗</a></article>
       </div>
     </section>
 
@@ -116,12 +116,13 @@ projectForm.addEventListener('submit', async (event) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(Object.fromEntries(new FormData(projectForm))),
     })
-    if (!response.ok) throw new Error('Request failed')
+    const result = await response.json().catch(() => ({}))
+    if (!response.ok) throw new Error(result.error || 'Request failed')
     projectForm.reset()
     formStatus.textContent = 'Thanks. Your enquiry is on its way.'
     formStatus.classList.add('success')
-  } catch {
-    formStatus.textContent = 'Something went wrong. Please try again or email us directly.'
+  } catch (error) {
+    formStatus.textContent = error.message || 'Something went wrong. Please try again or email us directly.'
     formStatus.classList.add('error')
   } finally {
     submitButton.disabled = false
